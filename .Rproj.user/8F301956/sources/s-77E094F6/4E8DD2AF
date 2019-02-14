@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1550176564760.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "557912020",
+    "id" : "4E8DD2AF",
+    "lastKnownWriteTime" : 1550179440,
+    "last_content_update" : 1550179440197,
+    "path" : "~/Documents/Github/highlightr/.Rbuildignore",
+    "project_path" : ".Rbuildignore",
+    "properties" : {
+        "cursorPosition" : "2,11",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "text"
+}

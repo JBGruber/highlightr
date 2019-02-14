@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549556786390.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "1CF96A7",
+    "lastKnownWriteTime" : 1550049418,
+    "last_content_update" : 1550142064609,
+    "path" : "/mnt/data/Dropbox/R projects/text_highlighter.rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "55,0",
+        "last_setup_crc32" : "",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

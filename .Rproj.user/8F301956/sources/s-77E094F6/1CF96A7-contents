@@ -1,0 +1,60 @@
+---
+title: "test"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# define function
+#' Text highlighter
+#'
+#' @param A text to be print with highlighted words 
+#' @param dict a data.frame with columns "word" and "colour"
+#'
+#' @return
+#' @export
+#'
+#' @examples
+highlight <- function(text, dict, id = NULL, output = c("html", "tex")) {
+  temp <- NULL
+  if (is.null(id)) id <- seq_along(text)
+  for (i in seq_along(text)) {
+    temp <- c(temp, paste0("<strong>", id[i], "</strong>\n<p>"))
+    for (j in seq_along(dict$word)) {
+      text[i] <- stringi::stri_replace_all_fixed(
+        str = text[i],
+        pattern = dict$word[j],
+        replacement = paste0("<span style='background-color: ", dict$colour[j], "'>", dict$word[j], "</span>"),
+        opts_fixed = stringi::stri_opts_fixed(case_insensitive = TRUE)
+      )
+    }
+    temp <- c(temp, paste0(text[i]))
+    temp <- c(temp, paste0("\n</p>\n"))
+  }
+  if (interactive()) {
+    tmpf <- paste0(tempfile(), ".html")
+  writeLines(temp, tmpf)
+  if (Sys.getenv("RSTUDIO") == "1")
+    rstudioapi::viewer(tmpf)
+  else
+    utils::browseURL(paste0("file://", tmpf))
+  } else {
+    cat(temp)
+  }
+}
+```
+
+## Highlight text as R output
+
+```{r results='asis'}
+text <- c("This is a good test with some bad words", "bad guy vs good guy", stringi::stri_rand_lipsum(9))
+dict <- tibble::tibble(
+  word = c("good", "bad"),
+  colour = c("#2ca25f", "#de2d26")
+)
+highlight(text, dict)
+```
+
+
+

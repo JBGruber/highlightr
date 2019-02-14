@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error in tibble(feature = c(\"good\", \"bad\"), bg_colour = c(\"#2ca25f\", \"#de2d26\")) : \n  could not find function \"tibble\"\n"}
