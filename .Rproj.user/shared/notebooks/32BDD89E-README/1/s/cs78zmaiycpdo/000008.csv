@@ -1,8 +1,0 @@
-"0","dict <- tibble(
-  feature = c(""good"", ""bad""),
-  bg_colour = c(""#2ca25f"", ""#de2d26"")
-)
-"
-"2","Error in tibble(feature = c(""good"", ""bad""), bg_colour = c(""#2ca25f"", ""#de2d26"")) : 
-  could not find function ""tibble""
-"

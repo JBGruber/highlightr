@@ -1,4 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^logo\.png$
+^highlightr.gif$
 README.Rmd

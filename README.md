@@ -41,4 +41,4 @@ This is a <span style="background-color: #2ca25f"> <font color=''>good</font></s
 </p>
 In `RStudio`:
 
-![highlightr.gif](http://www.johannesbgruber.eu/img/highlightr.gif)
+![highlightr.gif](./man/figures/highlightr.gif)

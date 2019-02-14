@@ -34,5 +34,5 @@ highlight(text, dict)
 
 In `RStudio`:
 
-![highlightr.gif](http://www.johannesbgruber.eu/img/highlightr.gif)
+![highlightr.gif](./man/figures/highlightr.gif)
 
