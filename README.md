@@ -31,14 +31,4 @@ dict <- tibble(
 highlight(text, dict)
 ```
 
-<strong>1:</strong>
-<p>
-This is a <span style="background-color: #2ca25f"> <font color=''>good</font></span> test with some <span style="background-color: #de2d26"> <font color=''>bad</font></span> words
-</p>
-<strong>2:</strong>
-<p>
-<span style="background-color: #de2d26"> <font color=''>bad</font></span> guy vs <span style="background-color: #2ca25f"> <font color=''>good</font></span> guy
-</p>
-In `RStudio`:
-
 ![highlightr.gif](./man/figures/highlightr.gif)

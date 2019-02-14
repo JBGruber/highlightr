@@ -21,7 +21,7 @@ devtools::install_github("JBGruber/highlightr")
 
 ## Usage
 
-```{r results='asis'}
+```{r eval=FALSE}
 library("highlightr")
 library("tibble")
 text <- c("This is a good test with some bad words", "bad guy vs good guy")
@@ -31,8 +31,6 @@ dict <- tibble(
 )
 highlight(text, dict)
 ```
-
-In `RStudio`:
 
 ![highlightr.gif](./man/figures/highlightr.gif)
 
