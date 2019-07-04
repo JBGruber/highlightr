@@ -5,6 +5,7 @@
 #' @param id A vector of ids which are displayed as headlines.
 #' @param case_insensitive Should search for feature be case insensitive?
 #' @param output Choose output format.
+#' @param return Should the code be returned as an object.
 #'
 #' @export
 #'
@@ -26,7 +27,8 @@ highlight <- function(text,
                       dict,
                       id = NULL,
                       case_insensitive = TRUE,
-                      output = c("html", "tex")) {
+                      output = c("html", "tex"),
+                      return = FALSE) {
   if (isTRUE(output[1] == "tex")) {
     stop("Coming soon...")
   }
@@ -43,7 +45,7 @@ highlight <- function(text,
     temp <- c(temp, paste0("<strong>", id[i], ":</strong>\n<p>"))
 
     # bg_colour
-    for (j in seq_along(id)) {
+    for (j in seq_along(dict$feature)) {
       text[i] <- stringi::stri_replace_all_fixed(
         str = text[i],
         pattern = dict$feature[j],
@@ -55,7 +57,7 @@ highlight <- function(text,
     }
 
     # txt_colour
-    for (j in seq_along(id)) {
+    for (j in seq_along(dict$feature)) {
       if (dict$txt_colour[j] != "black") {
         text[i] <- stringi::stri_replace_all_fixed(
           str = text[i],
@@ -69,7 +71,7 @@ highlight <- function(text,
     }
 
     # bold
-    for (j in seq_along(id)) {
+    for (j in seq_along(dict$feature)) {
       if (dict$bold[j]) {
         text[i] <- stringi::stri_replace_all_fixed(
           str = text[i],
@@ -81,7 +83,7 @@ highlight <- function(text,
     }
 
     # italic
-    for (j in seq_along(id)) {
+    for (j in seq_along(dict$feature)) {
       if (dict$italic[j]) {
         text[i] <- stringi::stri_replace_all_fixed(
           str = text[i],
@@ -93,7 +95,7 @@ highlight <- function(text,
     }
 
     # strike_out
-    for (j in seq_along(id)) {
+    for (j in seq_along(dict$feature)) {
       if (dict$strike_out[j]) {
         text[i] <- stringi::stri_replace_all_fixed(
           str = text[i],
@@ -122,6 +124,11 @@ highlight <- function(text,
   } else {
 
     cat(temp)
+
+  }
+  if (return) {
+
+    return(temp)
 
   }
 }
