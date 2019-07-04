@@ -5,7 +5,7 @@
 \title{Text highlighter}
 \usage{
 highlight(text, dict, id = NULL, case_insensitive = TRUE,
-  output = c("html", "tex"))
+  output = c("html", "tex"), return = FALSE)
 }
 \arguments{
 \item{text}{A text to be printed with highlighted words.}
@@ -17,6 +17,8 @@ highlight(text, dict, id = NULL, case_insensitive = TRUE,
 \item{case_insensitive}{Should search for feature be case insensitive?}
 
 \item{output}{Choose output format.}
+
+\item{return}{Should the code be returned as an object.}
 }
 \description{
 Text highlighter
