@@ -15,7 +15,8 @@ Suggests:
     rstudioapi,
     knitr,
     testthat,
-    spelling
+    spelling,
+    covr
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr

@@ -3,3 +3,5 @@
 ^logo\.png$
 ^highlightr.gif$
 README.Rmd
+^\.travis\.yml$
+^codecov\.yml$
