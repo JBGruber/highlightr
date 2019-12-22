@@ -4,9 +4,15 @@
 \alias{as_dict}
 \title{Construct dictionary}
 \usage{
-as_dict(x, feature = "feature", bg_colour = "bg_colour",
-  txt_colour = "txt_colour", bold = "bold", italic = "italic",
-  strike_out = "strike_out")
+as_dict(
+  x,
+  feature = "feature",
+  bg_colour = "bg_colour",
+  txt_colour = "txt_colour",
+  bold = "bold",
+  italic = "italic",
+  strike_out = "strike_out"
+)
 }
 \arguments{
 \item{x}{A data.frame with columns of switches to determine text

@@ -10,7 +10,8 @@
 #' @export
 #'
 #' @examples
-#' text <- c("This is a good test with some bad words", "bad is red and good is green")
+#' text <- c("This is a good test with some bad words",
+#'           "bad is red and good is green")
 #' df <- data.frame(
 #'   feature = c("good", "bad"),
 #'   bg_colour = c("green", "red"),
@@ -27,11 +28,32 @@ highlight <- function(text,
                       dict,
                       id = NULL,
                       case_insensitive = TRUE,
-                      output = c("html", "tex"),
+                      output = c("html", "tex", "ggplot", "plot"),
                       return = FALSE) {
-  if (isTRUE(output[1] == "tex")) {
-    stop("Coming soon...")
-  }
+
+  args <- as.list(match.call()[-1])
+
+  args$output <- NULL
+
+  switch(
+    output[1],
+    "html"   = do.call("hightlight_html", args),
+    "tex"    = do.call("hightlight_tex", args),
+    "ggplot" = do.call("hightlight_plot", args),
+    "plot"   = do.call("hightlight_plot", args),
+    stop("Choose a valid output option.")
+  )
+
+}
+
+#' @rdname highlight
+#' @export
+hightlight_html <- function(text,
+                            dict,
+                            id = NULL,
+                            case_insensitive = TRUE,
+                            return = FALSE) {
+
   if (isTRUE(!"highlight_dict" %in% class(dict))) {
     dict <- as_dict(dict)
   }
@@ -40,7 +62,11 @@ highlight <- function(text,
 
   temp <- NULL
 
-  for (i in seq_along(text)) {
+  opts_fixed <- stringi::stri_opts_fixed(
+    case_insensitive = case_insensitive
+  )
+
+  for (i in seq_along(as.character(text))) {
 
     temp <- c(temp, paste0("<strong>", id[i], ":</strong>\n<p>"))
 
@@ -49,10 +75,12 @@ highlight <- function(text,
       text[i] <- stringi::stri_replace_all_fixed(
         str = text[i],
         pattern = dict$feature[j],
-        replacement = paste0("<span style='background-color: ",
-                             dict$bg_colour[j], "'>",
-                             dict$feature[j], "</span>"),
-        opts_fixed = stringi::stri_opts_fixed(case_insensitive = case_insensitive)
+        replacement = paste0(
+          "<span style='background-color: ",
+          dict$bg_colour[j], "'>",
+          dict$feature[j], "</span>"
+        ),
+        opts_fixed = opts_fixed
       )
     }
 
@@ -62,10 +90,12 @@ highlight <- function(text,
         text[i] <- stringi::stri_replace_all_fixed(
           str = text[i],
           pattern = dict$feature[j],
-          replacement = paste0(" <font color='",
-                               dict$txt_colour[j], "'>",
-                               dict$feature[j], "</font>"),
-          opts_fixed = stringi::stri_opts_fixed(case_insensitive = case_insensitive)
+          replacement = paste0(
+            " <font color='",
+            dict$txt_colour[j], "'>",
+            dict$feature[j], "</font>"
+          ),
+          opts_fixed = opts_fixed
         )
       }
     }
@@ -77,7 +107,7 @@ highlight <- function(text,
           str = text[i],
           pattern = dict$feature[j],
           replacement = paste0("<strong>", dict$feature[j], "</strong>"),
-          opts_fixed = stringi::stri_opts_fixed(case_insensitive = case_insensitive)
+          opts_fixed = opts_fixed
         )
       }
     }
@@ -89,7 +119,7 @@ highlight <- function(text,
           str = text[i],
           pattern = dict$feature[j],
           replacement = paste0("<em>", dict$feature[j], "</em>"),
-          opts_fixed = stringi::stri_opts_fixed(case_insensitive = case_insensitive)
+          opts_fixed = opts_fixed
         )
       }
     }
@@ -101,7 +131,7 @@ highlight <- function(text,
           str = text[i],
           pattern = dict$feature[j],
           replacement = paste0("<strike>", dict$feature[j], "</strike>"),
-          opts_fixed = stringi::stri_opts_fixed(case_insensitive = case_insensitive)
+          opts_fixed = opts_fixed
         )
       }
     }
@@ -126,6 +156,7 @@ highlight <- function(text,
     cat(temp)
 
   }
+
   if (return) {
 
     return(temp)
@@ -133,6 +164,27 @@ highlight <- function(text,
   }
 }
 
+
+#' @rdname highlight
+#' @export
+hightlight_tex <- function(text,
+                           dict,
+                           id = NULL,
+                           case_insensitive = TRUE,
+                           return = FALSE) {
+  stop("Coming soon...")
+}
+
+
+#' @rdname highlight
+#' @export
+hightlight_plot <- function(text,
+                            dict,
+                            id = NULL,
+                            case_insensitive = TRUE,
+                            return = FALSE) {
+  stop("Coming soon...")
+}
 
 #' Construct dictionary
 #'

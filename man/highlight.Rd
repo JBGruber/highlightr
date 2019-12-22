@@ -2,10 +2,25 @@
 % Please edit documentation in R/highlight.R
 \name{highlight}
 \alias{highlight}
+\alias{hightlight_html}
+\alias{hightlight_tex}
+\alias{hightlight_plot}
 \title{Text highlighter}
 \usage{
-highlight(text, dict, id = NULL, case_insensitive = TRUE,
-  output = c("html", "tex"), return = FALSE)
+highlight(
+  text,
+  dict,
+  id = NULL,
+  case_insensitive = TRUE,
+  output = c("html", "tex", "ggplot", "plot"),
+  return = FALSE
+)
+
+hightlight_html(text, dict, id = NULL, case_insensitive = TRUE, return = FALSE)
+
+hightlight_tex(text, dict, id = NULL, case_insensitive = TRUE, return = FALSE)
+
+hightlight_plot(text, dict, id = NULL, case_insensitive = TRUE, return = FALSE)
 }
 \arguments{
 \item{text}{A text to be printed with highlighted words.}
@@ -24,7 +39,8 @@ highlight(text, dict, id = NULL, case_insensitive = TRUE,
 Text highlighter
 }
 \examples{
-text <- c("This is a good test with some bad words", "bad is red and good is green")
+text <- c("This is a good test with some bad words",
+          "bad is red and good is green")
 df <- data.frame(
   feature = c("good", "bad"),
   bg_colour = c("green", "red"),

@@ -2,4 +2,7 @@
 
 export(as_dict)
 export(highlight)
+export(hightlight_html)
+export(hightlight_plot)
+export(hightlight_tex)
 importFrom(tibble,tibble)
