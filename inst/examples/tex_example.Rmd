@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Example for Markdown to PDF."
 author: "Johannes B. Gruber"
 date: "01/01/2020"
 output: pdf_document
@@ -20,14 +20,15 @@ library(highlightr)
 text <- c("This is a good test with some bad words.",
           "The word 'bad' has red background and white font colour.",
           "The word 'good' has #77dd77 (green) background, font colour #00008b (blue).",
-          "Both 'bad' and 'good' are bold and italic")
+          "Both 'bad' and 'good' are bold and italic",
+          "The word 'important' is bold and 'urgent' is italic.")
 
 dict <- as_dict(data.frame(
-  feature = c("good", "bad"),
-  bg_colour = c("#77dd77", "red"),
-  txt_colour = c("#00008b", "white"),
-  bold = TRUE,
-  italic = TRUE,
+  feature = c("good", "bad", "important", "urgent"),
+  bg_colour = c("#77dd77", "red", "", ""),
+  txt_colour = c("#00008b", "white", "", ""),
+  bold = c(TRUE, TRUE, TRUE, FALSE),
+  italic = c(TRUE, TRUE, FALSE, TRUE),
   strike_out = TRUE, # is currently ignored
   stringsAsFactors = FALSE
 ))
