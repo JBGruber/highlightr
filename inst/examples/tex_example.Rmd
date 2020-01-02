@@ -1,0 +1,37 @@
+---
+title: "Untitled"
+author: "Johannes B. Gruber"
+date: "01/01/2020"
+output: pdf_document
+header-includes:
+   - \usepackage{xcolor}
+   - \usepackage{soul}
+---
+
+# A Minimal Example for Markdown
+
+This is a minimal example of using **highlightr** to produce an _PDF_ document from _Markdown_.
+
+## Define custom dictionary and highlight text
+
+```{r results='asis'}
+library(highlightr)
+
+text <- c("This is a good test with some bad words.",
+          "The word 'bad' has red background and white font colour.",
+          "The word 'good' has #77dd77 (green) background, font colour #00008b (blue).",
+          "Both 'bad' and 'good' are bold and italic")
+
+dict <- as_dict(data.frame(
+  feature = c("good", "bad"),
+  bg_colour = c("#77dd77", "red"),
+  txt_colour = c("#00008b", "white"),
+  bold = TRUE,
+  italic = TRUE,
+  strike_out = TRUE, # is currently ignored
+  stringsAsFactors = FALSE
+))
+
+highlight(text, dict, output = "tex")
+```
+

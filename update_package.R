@@ -54,7 +54,7 @@ devtools::install()
 
 
 # build manual
-system("cd .. && rm rwhatsapp.pdf && R CMD Rd2pdf highlightr")
+system("cd .. && rm highlightr.pdf && R CMD Rd2pdf highlightr")
 
 
 # For release on CRAN

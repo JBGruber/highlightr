@@ -172,7 +172,106 @@ hightlight_tex <- function(text,
                            id = NULL,
                            case_insensitive = TRUE,
                            return = FALSE) {
-  stop("Coming soon...")
+
+  if (isTRUE(!"highlight_dict" %in% class(dict))) {
+    dict <- as_dict(dict)
+  }
+
+  dict$bg_colour <- tolatexrgb(dict$bg_colour)
+  dict$txt_colour <- tolatexrgb(dict$txt_colour)
+
+  if (isTRUE(is.null(id))) id <- seq_along(text)
+
+  temp <- NULL
+
+  opts_fixed <- stringi::stri_opts_fixed(
+    case_insensitive = case_insensitive
+  )
+
+  for (i in seq_along(as.character(text))) {
+
+    temp <- c(temp, paste0("\\textbf{", id[i], "} \\par"))
+
+  # txt_colour
+  for (j in seq_along(dict$feature)) {
+    if (nchar(dict$txt_colour[j]) > 0) {
+      text[i] <- stringi::stri_replace_all_fixed(
+        str = text[i],
+        pattern = dict$feature[j],
+        replacement = paste0(
+          "\\textcolor[rgb]{",
+          dict$txt_colour[j], "}{",
+          dict$feature[j], "}"
+        ),
+        opts_fixed = opts_fixed
+      )
+    }
+  }
+
+  # strike_out
+  # Can't be combined with highlight in soul. Still looking
+  # for solution
+  # for (j in seq_along(dict$feature)) {
+  #   if (dict$strike_out[j]) {
+  #     text[i] <- stringi::stri_replace_all_fixed(
+  #       str = text[i],
+  #       pattern = dict$feature[j],
+  #       replacement = paste0("\\st{", dict$feature[j], "}"),
+  #       opts_fixed = opts_fixed
+  #     )
+  #   }
+  # }
+
+  # bg_colour
+  for (j in seq_along(dict$feature)) {
+    if (nchar(dict$bg_colour[j]) > 0) {
+      text[i] <- stringi::stri_replace_all_fixed(
+        str = text[i],
+        pattern = dict$feature[j],
+        replacement = paste0(
+          "\\definecolor{temp}{rgb}{",
+          dict$bg_colour[j], "}\\sethlcolor{temp}\\hl{",
+          dict$feature[j], "}"
+        ),
+        opts_fixed = opts_fixed
+      )
+    }
+  }
+
+  # bold
+  for (j in seq_along(dict$feature)) {
+    if (dict$bold[j]) {
+      text[i] <- stringi::stri_replace_all_fixed(
+        str = text[i],
+        pattern = dict$feature[j],
+        replacement = paste0("\\textbf{", dict$feature[j], "}"),
+        opts_fixed = opts_fixed
+      )
+    }
+  }
+
+  # italic
+  for (j in seq_along(dict$feature)) {
+    if (dict$italic[j]) {
+      text[i] <- stringi::stri_replace_all_fixed(
+        str = text[i],
+        pattern = dict$feature[j],
+        replacement = paste0("\\textit{", dict$feature[j], "}"),
+        opts_fixed = opts_fixed
+      )
+    }
+  }
+    temp <- c(temp, paste0(text[i]))
+    temp <- c(temp, paste0("\\par"))
+
+  }
+
+  if (return) {
+    return(temp)
+  } else {
+    cat(temp)
+  }
+
 }
 
 
@@ -258,4 +357,19 @@ as_dict <- function(x,
   )
   class(out) <- c(class(out), "highlight_dict")
   return(out)
+}
+
+#' Convert colours to Latex RGB specification
+#'
+#' @param cols Either one or multiple colour names, hexadecimal strings or
+#'   integer values.
+#'
+#' @importFrom grDevices col2rgb rgb
+#' @noRd
+tolatexrgb <- function(cols) {
+  not_emtpy <- nchar(cols) > 0
+  temp <- grDevices::col2rgb(cols[not_emtpy]) / 255
+  temp <- apply(temp, MARGIN = 2, FUN = paste0, collapse = ",")
+  cols[not_emtpy] <- temp
+  return(cols)
 }
