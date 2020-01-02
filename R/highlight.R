@@ -200,6 +200,10 @@ hightlight_tex <- function(text,
       x = replacements,
       after = "}"
     )
+  } else if (interactive()) {
+    warning("strike_out and background colours conflict in",
+            " the LaTeX soul package which is why strike_out",
+            " is ignored when any background colour is set.")
   }
 
   # txt_colour

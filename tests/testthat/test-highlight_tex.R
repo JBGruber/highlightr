@@ -27,4 +27,17 @@ test_that("highlighting works", {
       readLines(temp)
     }, readLines("../files/test.tex")
   )
+  expect_equal({
+    temp <- tempfile()
+    dict$bg_colour <- ""
+    writeLines(
+      highlight(text, dict,
+                output = "tex",
+                return = TRUE),
+      temp,
+      useBytes = TRUE
+    )
+    readLines(temp)
+  }, readLines("../files/test2.tex")
+  )
 })
