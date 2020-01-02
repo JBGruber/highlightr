@@ -161,94 +161,73 @@ hightlight_tex <- function(text,
 
   if (isTRUE(is.null(id))) id <- seq_along(text)
 
-  temp <- NULL
-
-  opts_fixed <- stringi::stri_opts_fixed(
+  opts <- stringi::stri_opts_regex(
     case_insensitive = case_insensitive
   )
 
-  for (i in seq_along(as.character(text))) {
+  # italic
+  replacements <- make_replacement(
+    before = "\\\\textit{",
+    variable = dict$italic,
+    x = "$1",
+    after = "}"
+  )
 
-    temp <- c(temp, paste0("\\textbf{", id[i], "} \\par"))
+  # bold
+  replacements <- make_replacement(
+    before = "\\\\textbf{",
+    variable = dict$bold,
+    x = replacements,
+    after = "}"
+  )
 
-  # txt_colour
-  for (j in seq_along(dict$feature)) {
-    if (nchar(dict$txt_colour[j]) > 0) {
-      text[i] <- stringi::stri_replace_all_fixed(
-        str = text[i],
-        pattern = dict$feature[j],
-        replacement = paste0(
-          "\\textcolor[rgb]{",
-          dict$txt_colour[j], "}{",
-          dict$feature[j], "}"
-        ),
-        opts_fixed = opts_fixed
-      )
-    }
-  }
+  # bg_colour
+  replacements <- make_replacement(
+    before = "\\\\definecolor{temp}{rgb}{",
+    variable = dict$bg_colour,
+    mid = "}\\\\sethlcolor{temp}\\\\hl{",
+    x = replacements,
+    after = "}"
+  )
 
   # strike_out
   # Can't be combined with highlight in soul. Still looking
   # for solution
-  # for (j in seq_along(dict$feature)) {
-  #   if (dict$strike_out[j]) {
-  #     text[i] <- stringi::stri_replace_all_fixed(
-  #       str = text[i],
-  #       pattern = dict$feature[j],
-  #       replacement = paste0("\\st{", dict$feature[j], "}"),
-  #       opts_fixed = opts_fixed
-  #     )
-  #   }
-  # }
-
-  # bg_colour
-  for (j in seq_along(dict$feature)) {
-    if (nchar(dict$bg_colour[j]) > 0) {
-      text[i] <- stringi::stri_replace_all_fixed(
-        str = text[i],
-        pattern = dict$feature[j],
-        replacement = paste0(
-          "\\definecolor{temp}{rgb}{",
-          dict$bg_colour[j], "}\\sethlcolor{temp}\\hl{",
-          dict$feature[j], "}"
-        ),
-        opts_fixed = opts_fixed
-      )
-    }
+  if (!any(nchar(dict$bg_colour) > 0)) {
+    replacements <- make_replacement(
+      before = "\\\\st{",
+      variable = dict$strike_out,
+      x = replacements,
+      after = "}"
+    )
   }
 
-  # bold
-  for (j in seq_along(dict$feature)) {
-    if (dict$bold[j]) {
-      text[i] <- stringi::stri_replace_all_fixed(
-        str = text[i],
-        pattern = dict$feature[j],
-        replacement = paste0("\\textbf{", dict$feature[j], "}"),
-        opts_fixed = opts_fixed
-      )
-    }
-  }
+  # txt_colour
+  replacements <- make_replacement(
+    before = "\\\\textcolor[rgb]{",
+    variable = dict$txt_colour,
+    mid = "}{",
+    x = replacements,
+    after = "}"
+  )
 
-  # italic
-  for (j in seq_along(dict$feature)) {
-    if (dict$italic[j]) {
-      text[i] <- stringi::stri_replace_all_fixed(
-        str = text[i],
-        pattern = dict$feature[j],
-        replacement = paste0("\\textit{", dict$feature[j], "}"),
-        opts_fixed = opts_fixed
-      )
-    }
-  }
-    temp <- c(temp, paste0(text[i]))
-    temp <- c(temp, paste0("\\par"))
+  out <- stringi::stri_replace_all_regex(
+    text,
+    paste0("(", dict$feature, ")"),
+    replacements,
+    vectorize_all = FALSE,
+    opts_regex = opts
+  )
 
-  }
+  out <- c(rbind(paste0("\\textbf{", id, "} \\par"),
+                 out,
+                 "\\par"))
+
 
   if (return) {
-    return(temp)
+    return(out)
   } else {
-    cat(temp)
+    cat(out)
   }
 
 }
