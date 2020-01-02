@@ -7,3 +7,4 @@ highlightr.Rproj
 inst/doc
 inst/examples/*.pdf
 inst/examples/*.log
+inst/examples/*.html

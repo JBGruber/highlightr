@@ -1,0 +1,16 @@
+---
+output: pdf_document
+header-includes:
+   - \usepackage{xcolor}
+   - \usepackage{soul}
+---
+```{r results='asis'}
+library("highlightr")
+library("tibble")
+text <- c("This is a good test with some bad words", "bad guy vs good guy")
+dict <- tibble(
+  feature = c("good", "bad"),
+  bg_colour = c("#2ca25f", "#de2d26")
+)
+highlight(text, dict, output = "tex")
+```
