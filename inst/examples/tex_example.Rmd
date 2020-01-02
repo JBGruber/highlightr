@@ -1,5 +1,5 @@
 ---
-title: "Example for Markdown to PDF."
+title: "Example for Markdown to PDF"
 author: "Johannes B. Gruber"
 date: "01/01/2020"
 output: pdf_document

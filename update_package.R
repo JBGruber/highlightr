@@ -52,6 +52,7 @@ lintr::lint_package()
 
 devtools::install()
 
+devtools::test_coverage()
 
 # build manual
 system("cd .. && rm highlightr.pdf && R CMD Rd2pdf highlightr")
