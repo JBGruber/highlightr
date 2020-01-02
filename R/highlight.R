@@ -60,90 +60,69 @@ hightlight_html <- function(text,
 
   if (isTRUE(is.null(id))) id <- seq_along(text)
 
-  temp <- NULL
-
-  opts_fixed <- stringi::stri_opts_fixed(
+  opts <- stringi::stri_opts_regex(
     case_insensitive = case_insensitive
   )
 
-  for (i in seq_along(as.character(text))) {
+  # strike_out
+  replacements <- make_replacement(
+    before = "<strike>",
+    variable = dict$bold,
+    x = "$1",
+    after = "</strike>"
+  )
 
-    temp <- c(temp, paste0("<strong>", id[i], ":</strong>\n<p>"))
+  # italic
+  replacements <- make_replacement(
+    before = "<em>",
+    variable = dict$bold,
+    x = replacements,
+    after = "</em>"
+  )
 
-    # bg_colour
-    for (j in seq_along(dict$feature)) {
-      text[i] <- stringi::stri_replace_all_fixed(
-        str = text[i],
-        pattern = dict$feature[j],
-        replacement = paste0(
-          "<span style='background-color: ",
-          dict$bg_colour[j], "'>",
-          dict$feature[j], "</span>"
-        ),
-        opts_fixed = opts_fixed
-      )
-    }
+  # bold
+  replacements <- make_replacement(
+    before = "<strong>",
+    variable = dict$bold,
+    x = replacements,
+    after = "</strong>"
+  )
 
-    # txt_colour
-    for (j in seq_along(dict$feature)) {
-      if (dict$txt_colour[j] != "black") {
-        text[i] <- stringi::stri_replace_all_fixed(
-          str = text[i],
-          pattern = dict$feature[j],
-          replacement = paste0(
-            " <font color='",
-            dict$txt_colour[j], "'>",
-            dict$feature[j], "</font>"
-          ),
-          opts_fixed = opts_fixed
-        )
-      }
-    }
+  # txt_colour
+  replacements <- make_replacement(
+    before = " <font color='",
+    variable = dict$txt_colour,
+    mid = "'>",
+    x = replacements,
+    after = "</font>"
+  )
 
-    # bold
-    for (j in seq_along(dict$feature)) {
-      if (dict$bold[j]) {
-        text[i] <- stringi::stri_replace_all_fixed(
-          str = text[i],
-          pattern = dict$feature[j],
-          replacement = paste0("<strong>", dict$feature[j], "</strong>"),
-          opts_fixed = opts_fixed
-        )
-      }
-    }
+  # bg_colour
+  replacements <- make_replacement(
+    before = "<span style='background-color: ",
+    variable = dict$bg_colour,
+    mid = "'>",
+    x = replacements,
+    after = "</span>"
+  )
 
-    # italic
-    for (j in seq_along(dict$feature)) {
-      if (dict$italic[j]) {
-        text[i] <- stringi::stri_replace_all_fixed(
-          str = text[i],
-          pattern = dict$feature[j],
-          replacement = paste0("<em>", dict$feature[j], "</em>"),
-          opts_fixed = opts_fixed
-        )
-      }
-    }
 
-    # strike_out
-    for (j in seq_along(dict$feature)) {
-      if (dict$strike_out[j]) {
-        text[i] <- stringi::stri_replace_all_fixed(
-          str = text[i],
-          pattern = dict$feature[j],
-          replacement = paste0("<strike>", dict$feature[j], "</strike>"),
-          opts_fixed = opts_fixed
-        )
-      }
-    }
+  out <- stringi::stri_replace_all_regex(
+    text,
+    paste0("(", dict$feature, ")"),
+    replacements,
+    vectorize_all = FALSE,
+    opts_regex = opts
+  )
 
-    temp <- c(temp, paste0(text[i]))
-    temp <- c(temp, paste0("\n</p>\n"))
+  out <- c(rbind(paste0("<strong>", id, ":</strong>\n<p>"),
+                 out,
+                 "\n</p>\n"))
 
-  }
   if (interactive()) {
 
     tmpf <- paste0(tempfile(), ".html")
-    writeLines(temp, tmpf)
+    writeLines(out, tmpf)
 
     if (Sys.getenv("RSTUDIO") == "1") {
       rstudioapi::viewer(tmpf)
@@ -153,13 +132,13 @@ hightlight_html <- function(text,
 
   } else {
 
-    cat(temp)
+    cat(out)
 
   }
 
   if (return) {
 
-    return(temp)
+    return(out)
 
   }
 }
@@ -358,6 +337,37 @@ as_dict <- function(x,
   class(out) <- c(class(out), "highlight_dict")
   return(out)
 }
+
+
+#' Internal function to make the replacement patterns
+#'
+#' @param x The feature to include in the replacement.
+#' @param variable A character or logical variable. Character variables are
+#'   placed between 'before' and 'mid'.
+#' @param before,mid,after Strings placed before and after x or between variable
+#'   and x ('mid').
+#'
+#' @noRd
+make_replacement <- function(before, variable, mid, x, after) {
+
+  if (is.character(variable)) {
+    test <- nchar(variable) > 0
+  } else if (is.logical(variable)) {
+    test <- variable
+    variable <- NULL
+  }
+
+  if (missing(mid)) {
+    mid <- NULL
+  }
+
+  ifelse(
+    test,
+    paste0(before, variable, mid, x, after),
+    x
+  )
+}
+
 
 #' Convert colours to Latex RGB specification
 #'
