@@ -62,14 +62,14 @@ If you want to output a PDF, you need to include two LaTeX packages in
 your header: `xcolor` and `soul`. You can do so in an `RMarkdown`
 document with the argument `header-includes` like this:
 
-``` markdown
----
+<pre><code>---
 output: pdf_document
 header-includes:
    - \usepackage{xcolor}
    - \usepackage{soul}
 ---
-``{r results='asis'}
+
+```{r results='asis'}
 library("highlightr")
 library("tibble")
 text <- c("This is a good test with some bad words", "bad guy vs good guy")
@@ -78,6 +78,6 @@ dict <- tibble(
   bg_colour = c("#2ca25f", "#de2d26")
 )
 highlight(text, dict, output = "tex")
-```
+```</code></pre>
 
 <kbd> ![PDF](./man/figures/pdf.png) </kbd>
