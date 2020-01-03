@@ -26,7 +26,7 @@ dict <- as_dict(data.frame(
   txt_colour = c("#00008b", "white", "", ""),
   bold = c(TRUE, TRUE, TRUE, FALSE),
   italic = c(TRUE, TRUE, FALSE, TRUE),
-  strike_out = TRUE, # is currently ignored
+  strike_out = TRUE,
   stringsAsFactors = FALSE
 ))
 

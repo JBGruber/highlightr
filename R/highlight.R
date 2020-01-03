@@ -67,7 +67,7 @@ hightlight_html <- function(text,
   # strike_out
   replacements <- make_replacement(
     before = "<strike>",
-    variable = dict$bold,
+    variable = dict$strike_out,
     x = "$1",
     after = "</strike>"
   )
@@ -75,7 +75,7 @@ hightlight_html <- function(text,
   # italic
   replacements <- make_replacement(
     before = "<em>",
-    variable = dict$bold,
+    variable = dict$italic,
     x = replacements,
     after = "</em>"
   )
@@ -90,11 +90,11 @@ hightlight_html <- function(text,
 
   # txt_colour
   replacements <- make_replacement(
-    before = " <font color='",
+    before = "<span style='color:",
     variable = dict$txt_colour,
     mid = "'>",
     x = replacements,
-    after = "</font>"
+    after = "</span>"
   )
 
   # bg_colour
